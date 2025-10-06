@@ -1,0 +1,296 @@
+№1
+#include<iostream>
+#include<ctime>
+#include<locale.h>
+void multiply_matrices(int N) {
+
+	setlocale(LC_ALL, "");
+int** a = newint*[N];
+int** b = newint*[N];
+int** c = newint*[N];
+
+for (int i = 0; i < N; i++) {
+        a[i] = newint[N];
+        b[i] = newint[N];
+        c[i] = newint[N];
+    }
+
+srand((unsigned)time(NULL));
+for (inti = 0; i< N; i++)
+for (int j = 0; j < N; j++) {
+            a[i][j] = rand() % 100 + 1;
+            b[i][j] = rand() % 100 + 1;
+            c[i][j] = 0;
+        }
+
+    clock_t start = clock();
+
+for (int i = 0; i < N; i++) {
+for (int j = 0; j < N; j++) {
+int elem_c = 0;
+for (int r = 0; r < N; r++) {
+                elem_c += a[i][r] * b[r][j];
+            }
+            c[i][j] = elem_c;
+        }
+    }
+
+    clock_t end = clock();
+
+double time_spent = (double)(end - start) / CLOCKS_PER_SEC;
+    std::cout<<"Размерматрицы: "<< N <<"; Времяумножения: "<<time_spent<<" секунд\n";
+for (int i = 0; i < N; i++) {
+delete[] a[i];
+delete[] b[i];
+delete[] c[i];
+    }
+delete[] a;
+delete[] b;
+delete[] c;
+}
+
+int main() {
+int sizes[] = {100, 200, 400, 1000, 2000, 4000, 10000};
+int count = sizeof(sizes) / sizeof(sizes[0]);
+for (int i = 0; i < count; i++) {
+        multiply_matrices(sizes[i]);
+    }
+return 0;
+}
+№2
+#include<iostream>
+#include<locale.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+
+void shell(int* items, intcount)
+{
+inti, j, gap, k;
+int x, a[5];
+    a[0] = 9; a[1] = 5; a[2] = 3; a[3] = 2; a[4] = 1;
+
+for (k = 0; k < 5; k++) {
+        gap = a[k];
+for (i = gap; i<count; ++i) {
+            x = items[i];
+for (j = i - gap; (j >= 0) && (x <items[j]); j = j - gap) {
+items[j + gap] = items[j];
+}
+items[j + gap] = x;
+        }
+    }
+}
+
+voidqs(int* items, intleft, intright)
+{
+inti, j;
+int x, y;
+i = left; j = right;
+
+x = items[(left + right) / 2];
+
+do {
+while ((items[i] < x) && (i<right)) i++;
+while ((x <items[j]) && (j >left)) j--;
+
+if (i<= j) {
+            y = items[i];
+items[i] = items[j];
+items[j] = y;
+i++; j--;
+        }
+    } while (i<= j);
+
+if (left< j) qs(items, left, j);
+if (i<right) qs(items, i, right);
+}
+
+voidquick_sort(int* arr, intcount)
+{
+qs(arr, 0, count - 1);
+}
+
+int compare(constvoid* a, constvoid* b) {
+return (*(int*)a - *(int*)b);
+}
+
+voidgenerate_random_array(int* arr, intcount)
+{
+for (inti = 0; i<count; i++) {
+arr[i] = rand() % 100000; 
+}
+}
+
+voidgenerate_sorted_array(int* arr, intcount)
+{
+for (inti = 0; i<count; i++) {
+arr[i] = i; 
+    }
+}
+
+voidgenerate_reverse_array(int* arr, intcount)
+{
+for (inti = 0; i<count; i++) {
+arr[i] = count - i - 1; 
+}
+}
+
+voidgenerate_half_sorted_half_reverse_array(int* arr, intcount)
+{
+inthalf = count / 2;
+
+for (inti = 0; i< half; i++) {
+arr[i] = i;
+    }
+
+for (inti = half; i<count; i++) {
+arr[i] = count - i + half - 1;
+    }
+}
+
+intis_sorted(int* arr, intcount)
+{
+for (inti = 0; i<count - 1; i++) {
+if (arr[i] >arr[i + 1]) {
+return 0;
+        }
+    }
+return 1;
+}
+
+voidtest_shell_sort(int* arr, intcount, constchar* test_name)
+{
+int* test_arr = newint[count];
+for (inti = 0; i<count; i++) {
+test_arr[i] = arr[i];
+    }
+
+clock_t start, end;
+    start = clock();
+    shell(test_arr, count);
+    end = clock();
+
+doublecpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+int sorted = is_sorted(test_arr, count);
+
+printf("СортировкаШелла - %s: %.6f секунд [%s]\n", test_name, cpu_time_used,
+        sorted ? "OK" : "ERROR");
+
+delete[]test_arr;
+}
+
+voidtest_quick_sort(int* arr, intcount, constchar* test_name)
+{
+int* test_arr = newint[count];
+for (inti = 0; i<count; i++) {
+test_arr[i] = arr[i];
+    }
+
+clock_t start, end;
+    start = clock();
+quick_sort(test_arr, count);
+    end = clock();
+
+doublecpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+int sorted = is_sorted(test_arr, count);
+
+printf("Быстраясортировка - %s: %.6f секунд [%s]\n", test_name, cpu_time_used,
+        sorted ? );
+
+delete[]test_arr;
+}
+
+voidtest_std_qsort(int* arr, intcount, constchar* test_name)
+{
+int* test_arr = newint[count];
+for (inti = 0; i<count; i++) {
+test_arr[i] = arr[i];
+    }
+
+clock_t start, end;
+doublecpu_time_used;
+
+start = clock();
+qsort(test_arr, count, sizeof(int), compare);
+    end = clock();
+
+cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+
+int sorted = is_sorted(test_arr, count);
+
+printf("Стандартнаяqsort - %s: %.6f секунд [%s]\n", test_name, cpu_time_used,
+        sorted ? "OK" : "ERROR");
+
+delete[]test_arr;
+}
+
+
+voidrun_shell_sort_tests(int* random_arr, int* sorted_arr, int* reverse_arr, int* half_sorted_half_reverse_arr, intcount)
+{
+printf("\nТЕСТИРОВАНИЕ СОРТИРОВКИ ШЕЛЛА:\n");
+printf("==============================\n");
+
+test_shell_sort(random_arr, count, "Случайныймассив");
+test_shell_sort(sorted_arr, count, "Прямоймассив");
+test_shell_sort(reverse_arr, count, "Обратныймассив");
+test_shell_sort(half_sorted_half_reverse_arr, count, "Половинапрямая, половинаобратная");
+}
+
+voidrun_quick_sort_tests(int* random_arr, int* sorted_arr, int* reverse_arr, int* half_sorted_half_reverse_arr, intcount)
+{
+printf("\nТЕСТИРОВАНИЕ БЫСТРОЙ СОРТИРОВКИ:\n");
+printf("===============================\n");
+
+test_quick_sort(random_arr, count, "Случайныймассив");
+test_quick_sort(sorted_arr, count, "Прямоймассив");
+test_quick_sort(reverse_arr, count, "Обратныймассив");
+test_quick_sort(half_sorted_half_reverse_arr, count, "Половинапрямая, половинаобратная");
+}
+
+voidrun_std_qsort_tests(int* random_arr, int* sorted_arr, int* reverse_arr, int* half_sorted_half_reverse_arr, intcount)
+{
+printf("\nТЕСТИРОВАНИЕ СТАНДАРТНОЙ ФУНКЦИИ QSORT:\n");
+printf("=======================================\n");
+
+test_std_qsort(random_arr, count, "Случайныймассив");
+test_std_qsort(sorted_arr, count, "Прямоймассив");
+test_std_qsort(reverse_arr, count, "Обратныймассив");
+test_std_qsort(half_sorted_half_reverse_arr, count, "Половинапрямая, половинаобратная");
+}
+
+intmain()
+{
+setlocale(LC_ALL, "");
+constint ARRAY_SIZE = 100000;
+
+printf("ТЕСТИРОВАНИЕ АЛГОРИТМОВ СОРТИРОВКИ\n");
+printf("Размер массива: %d элементов\n", ARRAY_SIZE);
+printf("===================================\n");
+
+int* random_arr = newint[ARRAY_SIZE];
+int* sorted_arr = newint[ARRAY_SIZE];
+int* reverse_arr = newint[ARRAY_SIZE];
+int* half_sorted_half_reverse_arr = newint[ARRAY_SIZE];
+
+srand(time(NULL));
+
+printf("\nГенерация тестовых массивов...\n");
+generate_random_array(random_arr, ARRAY_SIZE);
+generate_sorted_array(sorted_arr, ARRAY_SIZE);
+generate_reverse_array(reverse_arr, ARRAY_SIZE);
+    generate_half_sorted_half_reverse_array(half_sorted_half_reverse_arr, ARRAY_SIZE);
+printf("Генерация завершена.\n");
+
+run_shell_sort_tests(random_arr, sorted_arr, reverse_arr, half_sorted_half_reverse_arr, ARRAY_SIZE);
+run_quick_sort_tests(random_arr, sorted_arr, reverse_arr, half_sorted_half_reverse_arr, ARRAY_SIZE);
+run_std_qsort_tests(random_arr, sorted_arr, reverse_arr, half_sorted_half_reverse_arr, ARRAY_SIZE);
+
+delete[]random_arr;
+delete[]sorted_arr;
+delete[]reverse_arr;
+delete[]half_sorted_half_reverse_arr;
+
+printf("\nВсе тесты завершены!\n");
+return 0;
+}
