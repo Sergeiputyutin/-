@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include<locale.h>
+#include<Windows.h>
+int main() {
+    setlocale(LC_ALL, "");
+    int **G;
+    int N, Size = 0;
+    int i, j;
+
+    printf("Введите число вершин: ");
+    scanf("%d", &N);
+
+    
+    srand(time(NULL));
+
+    G = (int**)malloc(N * sizeof(int*));
+    int *loop = (int*)calloc(N, sizeof(int));
+    int *deg = (int*)calloc(N, sizeof(int));
+
+    for (i = 0; i < N; i++) {
+        G[i] = (int*)malloc(N * sizeof(int));
+    }
+
+   
+    for (i = 0; i < N; i++) {
+        for (j = i; j < N; j++) {
+            if (i == j) {
+                G[i][j] = rand() % 2; 
+                loop[i] = G[i][j];
+            } else {
+                G[j][i] = G[i][j] = rand() % 2;
+            }
+
+            Size += G[i][j];
+        }
+    }
+	 for (i = 0; i < N; i++) {
+		 for (j = 0; j < N; j++){
+			printf("%d ", G[i][j]);
+		 }
+		 printf("\n");
+    }
+    printf("Размер: %d\n", Size);
+
+
+    for (i = 0; i < N; i++) {
+        for (j = 0; j < N; j++) {
+            if (i != j) {
+                deg[i] += G[i][j];
+            }
+        }
+        deg[i] += 2 * loop[i]; 
+    }
+
+  
+    for (i = 0; i < N; i++) {
+        if (deg[i] == 0 && loop[i] == 0) {
+            printf("Вершина %d - Изолированная\n", i);
+        }
+        if (deg[i] == 2 && loop[i] == 1) {
+            printf("Вершина %d - Изолированная (петлёй)\n", i);
+        }
+        if (deg[i] == 1 && loop[i] == 0) {
+            printf("Вершина %d - Концевая\n", i);
+        }
+        if ((deg[i] - 2 * loop[i]) == (N - 1)) {
+            printf("Вершина %d - Доминирующая\n", i);
+        }
+    }
+
+    for (i = 0; i < N; i++) {
+        free(G[i]);
+    }
+    free(G);
+    free(loop);
+    free(deg);
+
+    return 0;
+}
